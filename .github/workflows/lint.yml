@@ -1,57 +1,56 @@
+---
 name: Sample2 CI
 
-on:
+on:  # yamllint disable-line rule:truthy
   push:
-    branches: [ master ]
+    branches: [master]
   pull_request:
-    branches: [ master ]
+    branches: [master]
 
 jobs:
   run_ci:
-
     runs-on: ubuntu-latest
     strategy:
       max-parallel: 2
       matrix:
-        python-version: [3.8]
-
+        python-version: [3.11]
     steps:
-    - uses: actions/checkout@v2
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v1
-      with:
-        python-version: ${{ matrix.python-version }}
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install -r app/requirements-ci.txt
-    - name: Run linters
-      run: |
-        make linters
-    - name: Run formatters
-      run: |
-        make formatters-ci
+      - name: Check out the codebase
+        uses: actions/checkout@v2
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v1
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r app/requirements-ci.txt
+      - name: Run linters
+        run: |
+          make linters
+      - name: Run formatters
+        run: |
+          make formatters-ci
 
   run_tests:
     needs: run_ci
-
     runs-on: ubuntu-latest
     strategy:
       max-parallel: 1
       matrix:
-        python-version: [3.8]
-
+        python-version: [3.11]
     steps:
-    - uses: actions/checkout@v2
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v1
-      with:
-        python-version: ${{ matrix.python-version }}
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install -r app/requirements-ci.txt
-    - name: Run tests
-      run: |
-        cd app
-        python3 -m pytest -v
+      - name: Check out the codebase
+        uses: actions/checkout@v2
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v1
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r app/requirements-ci.txt
+      - name: Run tests
+        run: |
+          cd app
+          python3 -m pytest -v

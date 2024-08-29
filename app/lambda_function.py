@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """Simple lambda function which return client's IP address."""
 import json
 import logging
