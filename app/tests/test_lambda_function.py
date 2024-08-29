@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """Tests related to lambda_function.py."""
 import json
 
@@ -6,7 +7,14 @@ import pytest
 
 
 @pytest.mark.parametrize(
-    "source_ip", ["127.0.0.1", "::1/128", "abcedfg", 0.1, 12345,]
+    "source_ip",
+    [
+        "127.0.0.1",
+        "::1/128",
+        "abcedfg",
+        0.1,
+        12345,
+    ],
 )
 def test_lambda_handler_valid_data(source_ip):
     """Test handling of unexpected exception."""
@@ -29,7 +37,11 @@ def test_lambda_handler_valid_data(source_ip):
 
 @pytest.mark.parametrize(
     "event",
-    ["abc", {"requestContext": {"httpMethod": "GET", "identity": "abc"}}, {},],
+    [
+        "abc",
+        {"requestContext": {"httpMethod": "GET", "identity": "abc"}},
+        {},
+    ],
 )
 def test_lambda_handler_unexpected_exceptions(event):
     """Test handling of unexpected exception."""
@@ -44,7 +56,16 @@ def test_lambda_handler_unexpected_exceptions(event):
 
 
 @pytest.mark.parametrize(
-    "method", ["BLABLA", "DELETE", "OPTIONS", "POST", "PUT", 0, None,]
+    "method",
+    [
+        "BLABLA",
+        "DELETE",
+        "OPTIONS",
+        "POST",
+        "PUT",
+        0,
+        None,
+    ],
 )
 def test__lambda_handler_unsupported_methods(method):
     """Test handling of HTTP methods other than GET method."""
